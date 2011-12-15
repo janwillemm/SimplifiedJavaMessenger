@@ -14,12 +14,13 @@ import java.util.ArrayList;
  *
  */
 public class Server {
-
 	private static ServerSocket server = null;
 	private static Thread reportThread;
+	private static ArrayList<Client> clients;
 	
 	public static void start(int portNumber) throws IOException, InterruptedException{
 		if(server == null){
+			clients = new ArrayList<Client>();
 			server = new ServerSocket(portNumber);
 			startReporting();
 		}
@@ -36,12 +37,25 @@ public class Server {
 	
 	private static void startReporting() throws InterruptedException{
 		reportThread = new Thread(new Report());
+		reportThread.start();
 	}
 	
+	public static void addClient(Client cl) {
+		if(!clients.contains(cl)) {
+			clients.add(cl);
+		}
+	}
+	
+	public static Client findClient(String name) {
+		for(Client c : clients) {
+			if(c.getName().equals(name)) {
+				return c;
+			}
+		}
+		return null;
+	}
+		
 	public static ArrayList<Client> getClients(){
-		
-		ArrayList<Client> clients = new ArrayList<Client>();
-		
 		return clients;
 	}
 }

@@ -20,13 +20,11 @@ public class Report implements Runnable{
 	private static boolean shouldRun = true;
 	
 	public Report(){
-		
-		Server.getClients().size();
 		this.clients = Server.getClients();
 	}
 	
 	public String toString(){
-		String res = "Server report from: " + now.toString() + "\r\n number of clients: " + this.clients.size() ;
+		String res = "-- Server report from: " + now.toString() + "\r\n    number of clients: " + this.clients.size() + "\r\n    connected clients: ";
 		for(Client c : this.clients){
 			res += c.getName() + ", ";
 		}
@@ -38,13 +36,14 @@ public class Report implements Runnable{
 			Report report = new Report();
 			System.out.println(report);
 			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				Thread.sleep(10000);
+			} 
+			catch (InterruptedException e) {
+				System.out.println(e.getMessage());
 				try {
 					Server.stop();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
+					System.out.println(e.getMessage());
 				}
 			}
 		}
@@ -53,7 +52,4 @@ public class Report implements Runnable{
 	public static void stop(){
 		shouldRun = false;
 	}
-	
-	
-
 }
