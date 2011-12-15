@@ -16,8 +16,9 @@ import java.util.ArrayList;
 public class Server {
 
 	private static ServerSocket server = null;
+	private static Thread reportThread;
 	
-	public static void start(int portNumber) throws IOException{
+	public static void start(int portNumber) throws IOException, InterruptedException{
 		if(server == null){
 			server = new ServerSocket(portNumber);
 			startReporting();
@@ -25,6 +26,7 @@ public class Server {
 	}
 	
 	public static void stop() throws IOException{
+		Report.stop();
 		server.close();
 	}
 	
@@ -32,15 +34,14 @@ public class Server {
 		return server;
 	}
 	
-	private static void startReporting(){
-		
-		System.out.println();
+	private static void startReporting() throws InterruptedException{
+		reportThread = new Thread(new Report());
 	}
 	
 	public static ArrayList<Client> getClients(){
 		
 		ArrayList<Client> clients = new ArrayList<Client>();
 		
-		return null;
+		return clients;
 	}
 }

@@ -7,6 +7,9 @@ package server;
 
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
+
+import lombok.*;
 
 /**
  * @author jan-willemmanenschijn
@@ -17,7 +20,7 @@ public class Client implements Runnable {
 	private Socket socket;
 	private BufferedReader in;
 	private PrintWriter out;
-	private String name;
+	@Getter private String name;
 	
 	public Client(Socket socket) throws IOException{
 		this.socket = socket;
@@ -28,6 +31,19 @@ public class Client implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		
+		for(int i = 0; i<100; i++)
+		out.println("hi");
+		while(true){
+			try {
+				String text = in.readLine();
+				out.println(text);
+				System.out.println(text);
+				Scanner sc = new Scanner(System.in);
+				out.println(sc.nextLine());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }
