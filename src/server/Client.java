@@ -6,6 +6,8 @@ package server;
 
 import java.io.*;
 import java.net.*;
+
+import shared.Message;
 import lombok.*;
 
 @EqualsAndHashCode
@@ -24,7 +26,7 @@ public class Client {
 		
 		in.start();
 		
-		this.out.sendMessage("Goedendag. U heeft verbinding met SimplifiedJavaMessenger Server v.0.01b.");
+		this.out.sendObject(new Message("Goedendag. U heeft verbinding met SimplifiedJavaMessenger Server v.0.01b.", null, null, null));
 	}
 	
 	public void disconnect() throws IOException {
@@ -36,7 +38,7 @@ public class Client {
 	public void receivedMessage(String whatComesIn) throws IOException {
 		if(whatComesIn != null) {
 			System.out.println(whatComesIn);
-			this.out.sendMessage(whatComesIn);
+			this.out.sendObject(new Message(whatComesIn, null, null, null));
 		}
 	}	
 }
