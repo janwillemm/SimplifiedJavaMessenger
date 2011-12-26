@@ -39,7 +39,7 @@ public class Receiver implements Runnable {
 				
 			catch (IOException e) {
 				try {
-					e.printStackTrace();
+					//e.printStackTrace();
 					client.disconnect();
 					break;
 				} catch (IOException e1) {

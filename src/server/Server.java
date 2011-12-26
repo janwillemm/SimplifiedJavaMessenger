@@ -62,15 +62,18 @@ public class Server {
 	}
 	
 	public static void listenForClients() throws IOException, InterruptedException{
+		int clientId = 0;
+		
 		while(true){
 			System.out.println("* Waiting for a client to connect...");
 		
 			Socket socket = getServer().accept();
-			Client client = new Client(socket);
+			Client client = new Client(socket, clientId);
 			
 			addClient(client);
 
-			System.out.println("* Client connected!");
+			System.out.println("* Client #" + clientId + " connected!");
+			clientId++;
 		}
 	}
 }
