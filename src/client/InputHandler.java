@@ -1,17 +1,19 @@
 package client;
 
-import java.io.*;
-import java.net.Socket;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Date;
 
 import shared.Message;
+import shared.Sender;
 
-public class Sender implements Runnable{
-
-	ObjectOutputStream out;
+public class InputHandler implements Runnable{
 	
-	public Sender(Socket socket) throws IOException{
-		this.out = new ObjectOutputStream(socket.getOutputStream());
+	Sender sender;
+	
+	public InputHandler(Sender sender){
+		this.sender = sender;
 	}
 
 	@Override
@@ -23,8 +25,7 @@ public class Sender implements Runnable{
 				String test = in.readLine();
 				Message message = new Message(test, new Date(), "Jan-Willem", "Rick");
 				
-				this.out.writeObject(message);
-				this.out.flush();
+				this.sender.sendObject(message);
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -34,4 +35,5 @@ public class Sender implements Runnable{
 		}
 		
 	}
+
 }

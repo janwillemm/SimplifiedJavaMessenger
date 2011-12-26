@@ -1,4 +1,4 @@
-package server;
+package shared;
 
 /**
  * @author Jan-Willem Manenschijn & Rick Wieman
@@ -19,5 +19,6 @@ public class Sender {
 	
 	public void sendObject(Object object) throws IOException {
 		this.out.writeObject(object);
+		this.out.flush();
 	}
 }
