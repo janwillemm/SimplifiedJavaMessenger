@@ -52,9 +52,9 @@ public class Server {
 		}
 	}
 	
-	public static Client findClient(String name) {
+	public static Client findClient(String clientId) {
 		for(Client c : clients) {
-			if(c.getName().equals(name)) {
+			if(String.valueOf(c.getClientId()).equals(clientId)) {
 				return c;
 			}
 		}
@@ -68,7 +68,7 @@ public class Server {
 			System.out.println("* Waiting for a client to connect...");
 		
 			Socket socket = getServer().accept();
-			Client client = new Client(socket);
+			Client client = new Client(socket, clientId);
 			
 			addClient(client);
 
