@@ -62,9 +62,28 @@ public class Client implements DataHandler{
 		this.out.sendObject(new Message(content, new Date(), -1, this.clientId));
 	}
 	
+	public void updateName(String newName) {
+		if(newName != null && !newName.equals("")) {
+			try {	
+				if(this.name == null) {
+					this.name = newName;
+					this.out.sendObject(new Message("Welkom, " + this.name + "!", new Date(), -1, this.clientId));
+					sendHelp();
+				}
+				else {
+					this.name = newName;
+					this.out.sendObject(new Message("Voortaan heet u " + this.name + ".", new Date(), -1, this.clientId));
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void sendHelp() throws IOException {
 		String helpText = "De volgende commando's zijn beschikbaar:";
-		helpText += "* NAME <naam>: Uw nickname;";
+		helpText += "* NAME <naam>: Uw nickname aanpassen;";
 		helpText += "* LIST: Een lijst met online clients;";
 		helpText += "* HELP: Dit overzicht.";
 		
@@ -88,8 +107,7 @@ public class Client implements DataHandler{
 			Command cmd = (Command) object;
 			try {
 				if(cmd.getCommand().equals("NAME")) {
-					this.name = cmd.getParameters();
-					this.out.sendObject(new Message("Welkom, " + this.name + "!", new Date(), -1, this.clientId));
+					updateName(cmd.getParameters());
 				}
 				else if(cmd.getCommand().equals("LIST")) {
 					sendOnlineUsers();
