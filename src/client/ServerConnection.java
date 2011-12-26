@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 
 import lombok.Getter;
 
+import shared.Command;
 import shared.DataHandler;
 import shared.Message;
 import shared.Receiver;
@@ -17,19 +18,20 @@ public class ServerConnection implements DataHandler{
 	Sender sender;
 	Thread send;
 	Thread receive;
+	int id = -1;
 	
-	public void createSocket(){
+	public void createSocket(Command cmd){
 		
 			try {
 				//JW 145.53.129.85
 				this.socket = new Socket("86.83.37.53", 1337);
 				this.sender = new Sender(socket);
-				this.send = new Thread(new InputHandler(sender));
+				this.send = new Thread(new InputHandler(this.sender, this.id));
 				this.receive = new Thread(new Receiver(this));
 				
 				this.send.start();
 				this.receive.start();
-				
+				this.sender.sendObject(cmd);
 				
 				
 			} catch (UnknownHostException e) {
@@ -45,7 +47,9 @@ public class ServerConnection implements DataHandler{
 	@Override
 	public void objectReceived(Object object) {
 		if(object instanceof Message){
+			
 			Message msg = (Message) object;
+			if(this.id == -1)this.id = msg.getTo();
 			System.out.println(msg.getContent());
 		}
 		
