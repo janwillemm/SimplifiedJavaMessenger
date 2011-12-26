@@ -5,18 +5,19 @@ package server;
  */
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Sender {
 
-	PrintWriter out;
+	ObjectOutputStream out;
 	
 	public Sender(Socket socket) throws IOException {
-		this.out = new PrintWriter(socket.getOutputStream(), true);
+		this.out = new ObjectOutputStream(socket.getOutputStream());
 	}
 	
-	public void sendMessage(String str) {
-		this.out.println(str);
+	public void sendObject(Object object) throws IOException {
+		this.out.writeObject(object);
 	}
 }
