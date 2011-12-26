@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Date;
 
+import shared.Command;
 import shared.DataHandler;
 import shared.Message;
 import shared.Receiver;
@@ -107,7 +108,7 @@ public class Client implements DataHandler{
 			Command cmd = (Command) object;
 			try {
 				if(cmd.getCommand().equals("NAME")) {
-					updateName(cmd.getParameters());
+					updateName(cmd.getParameters()[0]);
 				}
 				else if(cmd.getCommand().equals("LIST")) {
 					sendOnlineUsers();
