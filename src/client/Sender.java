@@ -27,10 +27,14 @@ public class Sender implements Runnable{
 			try {
 				String test = in.readLine();
 				Message message = new Message(test, new Date(), "Jan-Willem", "Rick");
-				message.serialize(this.out);
+				
+				this.out.writeObject(message);
+				this.out.flush();
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				
 			}
 		}
 		
