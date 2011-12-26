@@ -1,18 +1,13 @@
-/**
- * 	Practicum IN1205P,	Report.java
- *	Auteur jan-willemmanenschijn,		Studienummer 4148509	
- *	Datum Dec 15, 2011
- */
 package server;
+
+/**
+ * @author Jan-Willem Manenschijn & Rick Wieman
+ */
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * @author jan-willemmanenschijn
- *
- */
 public class Report implements Runnable{
 	
 	private final Date now = new Date();

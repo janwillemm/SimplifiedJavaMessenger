@@ -1,8 +1,6 @@
 package shared;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.Date;
 
 import lombok.*;
@@ -10,11 +8,10 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 public class Message implements Serializable{
-
-	private static final long serialVersionUID = 1L;
+	
+	private static final long serialVersionUID = 429393999999555657L;
 	private String content;
 	private Date date;
 	private String from;
 	private String to;
-
 }

@@ -1,8 +1,5 @@
 package client;
 
-import java.io.*;
-import java.util.Scanner;
-
 public class Start {
 
 	/**
