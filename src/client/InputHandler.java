@@ -29,10 +29,15 @@ public class InputHandler implements Runnable{
 				String input = in.readLine();
 				
 				if(input.substring(0, 1).equals("/")){
-					Command cmd = new Command(input.split(" ")[0].replace("/", "").toUpperCase(), input.replace(input.split(" ")[0], "").split(" "), this.id);
-					this.sender.sendObject(cmd);
+					String cmnd = input.split(" ")[0];
+					if(cmnd.toUpperCase().equals("/TO")){
+						this.destId = Integer.parseInt(input.split(" ")[1]);
+					}else{
+						Command cmd = new Command(cmnd.replace("/", "").toUpperCase(), input.replace(cmnd, "").split(" "), this.id);
+						this.sender.sendObject(cmd);
+					}
 				}else{
-					Message message = new Message(input, new Date(), this.id, this.destId);
+					Message message = new Message(input, new Date(), null, 0, this.destId);
 					this.sender.sendObject(message);
 				}
 				
