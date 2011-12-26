@@ -52,7 +52,7 @@ public class Server {
 		}
 	}
 	
-	public static Client findClient(String clientId) {
+	public static Client findClient(int clientId) {
 		for(Client c : clients) {
 			if(String.valueOf(c.getClientId()).equals(clientId)) {
 				return c;

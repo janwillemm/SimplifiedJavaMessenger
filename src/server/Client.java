@@ -32,7 +32,7 @@ public class Client implements DataHandler{
 		
 		in.start();
 		
-		this.out.sendObject(new Message("Goedendag. U heeft verbinding met SimplifiedJavaMessenger Server v.0.05b.", new Date(), -1, this.clientId));
+		this.out.sendObject(new Message("Goedendag. U heeft verbinding met SimplifiedJavaMessenger Server v.0.05b.", new Date(), "Server", -1, this.clientId));
 	}
 	
 	public void disconnect(){
@@ -46,10 +46,17 @@ public class Client implements DataHandler{
 		System.out.println("* Client disconnected.");
 	}
 	
-	public void receivedMessage(String whatComesIn) throws IOException {
-		if(whatComesIn != null) {
-			System.out.println(whatComesIn);
-			this.out.sendObject(new Message(whatComesIn, new Date(), -1, this.clientId));
+	public void receivedMessage(Message msg) throws IOException {
+		if(msg != null) {
+			System.out.println(msg.toString());
+			
+			Client target = Server.findClient(msg.getTo());
+			if(target != null) {
+				target.getOut().sendObject(new Message(msg.getContent(), new Date(), msg.getFrom(), msg.getFromId(), msg.getTo()));
+			}
+			else {
+				this.out.sendObject(new Message("Die persoon is momenteel niet online...", new Date(), "Server", -1, this.clientId));
+			}
 		}
 	}
 	
@@ -58,9 +65,9 @@ public class Client implements DataHandler{
 		for(Client cl : Server.getClients()) {
 			content += "#" + cl.getClientId() + ": " + cl.getName() + "\n";
 		}
-		content = content.substring(0, Server.getClients().size()-2);
+		content = content.trim();
 		
-		this.out.sendObject(new Message(content, new Date(), -1, this.clientId));
+		this.out.sendObject(new Message(content, new Date(), "Server", -1, this.clientId));
 	}
 	
 	public void updateName(String newName) {
@@ -68,12 +75,12 @@ public class Client implements DataHandler{
 			try {	
 				if(this.name == null) {
 					this.name = newName;
-					this.out.sendObject(new Message("Welkom, " + this.name + "!", new Date(), -1, this.clientId));
+					this.out.sendObject(new Message("Welkom, " + this.name + "!", new Date(), "Server", -1, this.clientId));
 					sendHelp();
 				}
 				else {
 					this.name = newName;
-					this.out.sendObject(new Message("Voortaan heet u " + this.name + ".", new Date(), -1, this.clientId));
+					this.out.sendObject(new Message("Voortaan heet u " + this.name + ".", new Date(), "Server", -1, this.clientId));
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -83,12 +90,12 @@ public class Client implements DataHandler{
 	}
 	
 	public void sendHelp() throws IOException {
-		String helpText = "De volgende commando's zijn beschikbaar:";
-		helpText += "* NAME <naam>: Uw nickname aanpassen;";
-		helpText += "* LIST: Een lijst met online clients;";
-		helpText += "* HELP: Dit overzicht.";
+		String helpText = "De volgende commando's zijn beschikbaar:\n";
+		helpText += "* /NAME <naam>: Uw nickname aanpassen;\n";
+		helpText += "* /LIST: Een lijst met online clients;\n";
+		helpText += "* /HELP: Dit overzicht.\n";
 		
-		this.out.sendObject(new Message(helpText, new Date(), -1, this.clientId));
+		this.out.sendObject(new Message(helpText, new Date(), "Server", -1, this.clientId));
 	}
 
 	@Override
@@ -96,8 +103,11 @@ public class Client implements DataHandler{
 		
 		if(object instanceof Message) {
 			Message msg = (Message) object;
+			msg.setFrom(this.name);
+			msg.setFromId(this.clientId);
+			
 			try {
-				this.receivedMessage(msg.toString());
+				this.receivedMessage(msg);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -22,10 +22,12 @@ public class Receiver implements Runnable{
 			} catch (IOException e) {
 				this.returnTo.disconnect();
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
+				break;
 			} catch (ClassNotFoundException e){
 				this.returnTo.disconnect();
-				e.printStackTrace();
+				//e.printStackTrace();
+				break;
 			}
 		}
 		
