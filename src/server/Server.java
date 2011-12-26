@@ -1,28 +1,32 @@
-/**
- * 	Practicum IN1205P,	Server.java
- *	Auteur jan-willemmanenschijn,		Studienummer 4148509	
- *	Datum Dec 15, 2011
- */
 package server;
+
+/**
+ * @author Jan-Willem Manenschijn & Rick Wieman
+ */
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
+import lombok.*;
 
-/**
- * @author jan-willemmanenschijn
- *
- */
 public class Server {
-	private static ServerSocket server = null;
+	@Getter private static int portNumber;
+	@Getter private static ServerSocket server = null;
 	private static Thread reportThread;
-	private static ArrayList<Client> clients;
+	@Getter private static ArrayList<Client> clients;
 	
 	public static void start(int portNumber) throws IOException, InterruptedException{
 		if(server == null){
 			clients = new ArrayList<Client>();
 			server = new ServerSocket(portNumber);
+			System.out.println("* Server up and running!");
+			
+			Server.portNumber = portNumber;
 			startReporting();
+			System.out.println("* Reporter up and running!");
+			
+			listenForClients();
 		}
 	}
 	
@@ -30,11 +34,7 @@ public class Server {
 		Report.stop();
 		server.close();
 	}
-	
-	public static ServerSocket get(){
-		return server;
-	}
-	
+		
 	private static void startReporting() throws InterruptedException{
 		reportThread = new Thread(new Report());
 		reportThread.start();
@@ -46,6 +46,12 @@ public class Server {
 		}
 	}
 	
+	public static void removeClient(Client cl) {
+		if(clients.contains(cl)) {
+			clients.remove(cl);
+		}
+	}
+	
 	public static Client findClient(String name) {
 		for(Client c : clients) {
 			if(c.getName().equals(name)) {
@@ -54,8 +60,17 @@ public class Server {
 		}
 		return null;
 	}
+	
+	public static void listenForClients() throws IOException, InterruptedException{
+		while(true){
+			System.out.println("* Waiting for a client to connect...");
 		
-	public static ArrayList<Client> getClients(){
-		return clients;
+			Socket socket = getServer().accept();
+			Client client = new Client(socket);
+			
+			addClient(client);
+
+			System.out.println("* Client connected!");
+		}
 	}
 }
