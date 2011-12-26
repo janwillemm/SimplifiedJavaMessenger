@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import lombok.Getter;
+
 import shared.DataHandler;
 import shared.Message;
 import shared.Receiver;
@@ -11,7 +13,7 @@ import shared.Sender;
 
 public class ServerConnection implements DataHandler{
 
-	Socket socket;
+	@Getter Socket socket;
 	Sender sender;
 	Thread send;
 	Thread receive;

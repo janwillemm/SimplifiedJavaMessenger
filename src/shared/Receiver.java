@@ -10,7 +10,7 @@ public class Receiver implements Runnable{
 	DataHandler returnTo;
 	
 	public Receiver(DataHandler returnTo) throws IOException{
-		this.in = new ObjectInputStream(returnTo.socket.getInputStream());
+		this.in = new ObjectInputStream(returnTo.getSocket().getInputStream());
 		this.returnTo = returnTo;
 	}
 	

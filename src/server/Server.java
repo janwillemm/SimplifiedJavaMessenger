@@ -68,7 +68,7 @@ public class Server {
 			System.out.println("* Waiting for a client to connect...");
 		
 			Socket socket = getServer().accept();
-			Client client = new Client(socket, clientId);
+			Client client = new Client(socket);
 			
 			addClient(client);
 
