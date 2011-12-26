@@ -18,11 +18,13 @@ public class Client implements DataHandler{
 	@Getter private Socket socket;
 	@Getter private Thread in;
 	@Getter private Sender out;
+	@Getter private int clientId;
 	@Getter private String name;
 	@Getter @Setter private Client partner = null;
 	
-	public Client(Socket socket) throws IOException{
+	public Client(Socket socket, int clientId) throws IOException{
 		this.socket = socket;
+		this.clientId = clientId;
 		
 		this.in = new Thread(new Receiver(this));
 		this.out = new Sender(this.socket);
