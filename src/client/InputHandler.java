@@ -41,7 +41,6 @@ public class InputHandler implements Runnable{
 					this.sender.sendObject(message);
 				}
 				
-				
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
