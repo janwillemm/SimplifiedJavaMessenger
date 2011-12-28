@@ -24,7 +24,7 @@ public class TestConversationPanel extends JFrame {
 		cp.addExternalMessage(new Message("Hallo daar",new Date(),"JW",1,0));
 		cp.addExternalMessage(new Message("Dit gaat mis!",new Date(),"Server",-1,0));
 		cp.addOwnMessage("Waarom dan?");
-		cp.addExternalMessage(new Message("Omdat jij het doet!",new Date(),"Server",-1,0));
+		cp.addExternalMessage(new Message("Omdat jij het doet! Kijk nu bijvoorbeeld eens naar deze veel te lange regel; word je daar gelukkig van?",new Date(),"Server",-1,0));
 		cp.addOwnMessage(":-(");
 		
 		cp.addExternalMessage(new Message("Hallo daar",new Date(),"JW",1,0));
