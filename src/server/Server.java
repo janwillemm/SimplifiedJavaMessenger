@@ -54,7 +54,7 @@ public class Server {
 	
 	public static Client findClient(int clientId) {
 		for(Client c : clients) {
-			if(String.valueOf(c.getClientId()).equals(clientId)) {
+			if(c.getClientId() == clientId) {
 				return c;
 			}
 		}
