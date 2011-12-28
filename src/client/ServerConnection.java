@@ -50,7 +50,7 @@ public class ServerConnection implements DataHandler{
 			
 			Message msg = (Message) object;
 			if(this.id == -1)this.id = msg.getTo();
-			System.out.println(msg.getFrom()+"zegt: "+msg.getContent());
+			System.out.println("*** "+msg.getFrom()+" zegt: "+msg.getContent());
 		}
 		
 	}

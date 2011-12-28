@@ -1,7 +1,6 @@
 package shared;
 
 import java.io.*;
-import java.net.Socket;
 
 
 public class Receiver implements Runnable{

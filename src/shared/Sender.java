@@ -4,9 +4,7 @@ package shared;
  * @author Jan-Willem Manenschijn & Rick Wieman
  */
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class Sender {

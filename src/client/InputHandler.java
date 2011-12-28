@@ -47,6 +47,8 @@ public class InputHandler implements Runnable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				
+			} catch (NumberFormatException e){
+				System.out.println("Voer wel een getal in!");
 			}
 		}
 		
