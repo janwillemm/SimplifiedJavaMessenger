@@ -40,7 +40,7 @@ public class InputHandler implements Runnable{
 					Message message = new Message(input, new Date(), null, 0, this.destId);
 					this.sender.sendObject(message);
 				}
-				
+				/********
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
