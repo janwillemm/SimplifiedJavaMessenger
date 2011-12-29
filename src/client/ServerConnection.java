@@ -3,6 +3,7 @@ package client;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import lombok.Getter;
 
@@ -19,14 +20,16 @@ public class ServerConnection implements DataHandler{
 	Thread send;
 	Thread receive;
 	int id = -1;
+	ArrayList<ChatConnection> chats;
+	
 	
 	public void createSocket(Command cmd){
-		
+			chats = new ArrayList<ChatConnection>();
 			try {
 				//JW 145.53.129.85
 				this.socket = new Socket("86.83.37.53", 1337);
 				this.sender = new Sender(socket);
-				this.send = new Thread(new InputHandler(this.sender, this.id));
+				this.send = new Thread(new InputHandler(this.sender));
 				this.receive = new Thread(new Receiver(this));
 				
 				this.send.start();
@@ -47,10 +50,24 @@ public class ServerConnection implements DataHandler{
 	@Override
 	public void objectReceived(Object object) {
 		if(object instanceof Message){
-			
 			Message msg = (Message) object;
 			if(this.id == -1)this.id = msg.getTo();
-			System.out.println("*** "+msg.getFrom()+" zegt: "+msg.getContent());
+			
+			int fromId = msg.getFromId();
+			boolean partnerFound = false;
+			for(ChatConnection chat : chats){
+				if(fromId == chat.partnerId){
+					chat.receivedMessage(msg);
+					partnerFound = true;
+				}
+			}
+			if(!partnerFound){
+				ChatConnection chat = new ChatConnection(msg.getFrom(), msg.getFromId());
+				this.addChat(chat);
+				chat.receivedMessage(msg);
+			}
+			
+			System.out.println(msg);
 		}
 		
 	}
@@ -58,6 +75,13 @@ public class ServerConnection implements DataHandler{
 	@Override
 	public void disconnect() {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	private void addChat(ChatConnection chat){
+		
+		this.chats.add(chat);
+		
 		
 	}
 	

@@ -15,9 +15,8 @@ public class InputHandler implements Runnable{
 	int id;
 	int destId;
 	
-	public InputHandler(Sender sender, int id){
+	public InputHandler(Sender sender){
 		this.sender = sender;
-		this.id = id;
 	}
 
 	@Override
@@ -33,7 +32,7 @@ public class InputHandler implements Runnable{
 					if(cmnd.toUpperCase().equals("/TO")){
 						this.destId = Integer.parseInt(input.split(" ")[1]);
 					}else{
-						Command cmd = new Command(cmnd.replace("/", "").toUpperCase(), input.replace(cmnd, "").split(" "), this.id);
+						Command cmd = new Command(cmnd.replace("/", "").toUpperCase(), input.replace(cmnd, "").split(" "), 0);
 						this.sender.sendObject(cmd);
 					}
 				}else{

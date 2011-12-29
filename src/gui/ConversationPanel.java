@@ -7,12 +7,15 @@ import javax.swing.text.*;
 import java.text.*;
 import java.util.Date;
 
+import lombok.*;
+
 import shared.Message;
 
 @SuppressWarnings("serial")
+
 public class ConversationPanel extends JPanel  {
-	private int partnerId = -1;
-	private String partner = null;
+	@Getter private int partnerId = -1;
+	@Getter private String partner = null;
 	
 	private JTextPane conversation = new JTextPane();
 	private AbstractDocument doc;
@@ -94,4 +97,5 @@ public class ConversationPanel extends JPanel  {
 	public void setInput(String str) {
 		this.inputBox.setText(str);
 	}
+
 }

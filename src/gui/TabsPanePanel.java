@@ -9,31 +9,31 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class TabsPanePanel extends JTabbedPane{
 	
-	private ArrayList<ConverstationPanel> panels;
+	private ArrayList<ConversationPanel> panels;
 	
 	public TabsPanePanel(){
 		super();
-		this.panels = new ArrayList<ConverstationPanel>();
+		this.panels = new ArrayList<ConversationPanel>();
 		
 	}
 	
-	public void addTabWithUser(ConverstationPanel panel){
+	public void addNewPanel(ConversationPanel panel){
 		this.panels.add(panel);
-		this.addTab("#" + panel.PId() + " - " + panel.P(), panel);
+		this.addTab("#" + panel.getPartnerId() + " - " + panel.getPartner(), panel);
 		//this.setMnemonicAt(this.getTabCount(), KeyEvent.VK_1);
 	}
 	
 	public void removeTabByUserId(int id){
-		ConverstationPanel cp = this.getTabByUserId(id);
+		ConversationPanel cp = this.getTabByUserId(id);
 		
 		this.remove(cp);
 		this.panels.remove(cp);
 		//this.
 	}
 	
-	public ConverstationPanel getTabByUserId(int id){
-		for(ConverstationPanel cp : this.panels){
-			if(cp.getId().equals(id+"")) return cp;
+	public ConversationPanel getTabByUserId(int id){
+		for(ConversationPanel cp : this.panels){
+			if(cp.getPartnerId() == id) return cp;
 		}
 		return null;
 	}
