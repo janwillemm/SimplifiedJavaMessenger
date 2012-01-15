@@ -1,9 +1,14 @@
 package client;
 
+import gui.MainFrame;
+
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import lombok.Getter;
 
@@ -27,7 +32,8 @@ public class ServerConnection implements DataHandler{
 			chats = new ArrayList<ChatConnection>();
 			try {
 				//JW 145.53.129.85
-				this.socket = new Socket("86.83.37.53", 1337);
+				//RickW 86.83.37.53
+				this.socket = new Socket("localhost", 1337);
 				this.sender = new Sender(socket);
 				this.send = new Thread(new InputHandler(this.sender));
 				this.receive = new Thread(new Receiver(this));
@@ -68,6 +74,9 @@ public class ServerConnection implements DataHandler{
 			}
 			
 			System.out.println(msg);
+		}
+		else if(object instanceof HashMap){
+			MainFrame.getInstance().addClients((HashMap<Integer, String>)object);
 		}
 		
 	}

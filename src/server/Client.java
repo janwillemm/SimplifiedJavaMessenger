@@ -7,6 +7,7 @@ package server;
 import java.io.*;
 import java.net.*;
 import java.util.Date;
+import java.util.HashMap;
 
 import shared.Command;
 import shared.DataHandler;
@@ -62,12 +63,15 @@ public class Client implements DataHandler{
 	
 	public void sendOnlineUsers() throws IOException {
 		String content = "Aantal online gebruikers: " + Server.getClients().size() + "\n";
+		HashMap<Integer, String> clients = new HashMap<Integer, String>();
 		for(Client cl : Server.getClients()) {
 			content += "#" + cl.getClientId() + ": " + cl.getName() + "\n";
+			clients.put(cl.getClientId(), cl.getName());
 		}
 		content = content.trim();
 		
-		this.out.sendObject(new Message(content, new Date(), "Server", -1, this.clientId));
+		this.out.sendObject(clients);
+		//this.out.sendObject(new Message(content, new Date(), "Server", -1, this.clientId));
 	}
 	
 	public void updateName(String newName) {

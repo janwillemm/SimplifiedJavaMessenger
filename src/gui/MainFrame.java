@@ -12,7 +12,7 @@ public class MainFrame extends JFrame{
 
 	public static MainFrame mf = null;
 	public TabsPanePanel tabs;
-	public ClientsPane clients;
+	public ClientsPane clients = null;
 	
 	public MainFrame(){
 		super("SIMPLIFIEDJAVAMESSENGER");
@@ -21,11 +21,12 @@ public class MainFrame extends JFrame{
 		this.setLayout(new BorderLayout());
 		
 		this.tabs = addTabs();
-		this.clients = addClients();
-		
+		this.clients = new ClientsPane();
+		this.add(this.clients, BorderLayout.EAST);
 		this.add(this.tabs, BorderLayout.CENTER);
 		
-		this.add(this.clients, BorderLayout.EAST);
+		
+		this.setBounds(100,100,550,500);
 		
 	}
 	
@@ -36,43 +37,8 @@ public class MainFrame extends JFrame{
 		return mf;
 	}
 	
-	public static void main(String[] args) {
-		MainFrame mf = MainFrame.getInstance();
-		mf.setBounds(100,100,550,500);
-		mf.setVisible(true);
-	}
-	
-	public ClientsPane addClients(){
-		ClientsPane cp = new ClientsPane();
-		
-		HashMap<Integer, String> clients = new HashMap<Integer, String>();
-		
-		clients.put(0,"JW");
-		clients.put(1,"Rick");
-		clients.put(2,"Jens");
-		clients.put(3,"Klaas");
-		clients.put(5,"Jan");
-		
-		clients.put(7,"JW");
-		clients.put(6,"Rick");
-		clients.put(9,"Jens");
-		clients.put(67,"Klaas");
-		clients.put(54,"Jan");
-		
-		clients.put(567,"JW");
-		clients.put(65,"Rick");
-		clients.put(53,"Jens");
-		clients.put(59,"Klaas");
-		clients.put(36,"Jan");
-		
-		clients.put(56,"JW");
-		clients.put(57,"Rick");
-		clients.put(58,"Jens");
-		clients.put(60,"Klaas");
-		clients.put(61,"Jan");
-		
-		cp.update(clients);
-		return cp;
+	public void addClients(HashMap<Integer, String> clients){
+		this.clients.update(clients);
 	}
 	
 	public TabsPanePanel addTabs(){
