@@ -23,7 +23,7 @@ public class Server {
 			System.out.println("* Server up and running!");
 			
 			Server.portNumber = portNumber;
-			//startReporting();
+			startReporting();
 			System.out.println("* Reporter up and running!");
 			
 			listenForClients();

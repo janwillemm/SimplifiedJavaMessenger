@@ -1,12 +1,6 @@
 package client;
 
-import gui.*;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Scanner;
-
-import shared.Command;
+import javax.swing.UIManager;
 
 public class Start{
 
@@ -14,5 +8,14 @@ public class Start{
 	 * @param args
 	 */
 	
-
+	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		Client.getInstance();
+	}
 }

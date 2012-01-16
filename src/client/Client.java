@@ -18,10 +18,10 @@ public class Client implements ActionListener{
 	private static Client cl = null;
 	@Getter private MainFrame mainFrame;
 	private WelcomeFrame wf;
-	private ServerConnection serverConn;
+	@Getter private ServerConnection serverConn;
 	
 	public Client(){
-		this.wf = new WelcomeFrame("This is SimplifiedJavaMessenger 0.01b. Thanks for using it!", this);
+		this.wf = new WelcomeFrame("This is SimplifiedJavaMessenger v0.1b. Thanks for using it!", this);
 		this.wf.setVisible(true);
 		
 		
@@ -47,16 +47,12 @@ public class Client implements ActionListener{
 		this.serverConn = new ServerConnection();
 		this.serverConn.createSocket();
 		try {
-			this.serverConn.sender.sendObject(new Command("NAME", new String[]{name}, -1));
-			this.serverConn.sender.sendObject(new Command("LIST",new String[]{}, -1));
+			this.serverConn.getSender().sendObject(new Command("NAME", new String[]{name}, -1));
+			this.serverConn.getSender().sendObject(new Command("LIST",new String[]{}, -1));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	}
-	public static void main(String[] args) {
-		Client.getInstance();
 	}
 	
 	public static Client getInstance() {

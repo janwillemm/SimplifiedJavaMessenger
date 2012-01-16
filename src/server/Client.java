@@ -9,6 +9,7 @@ import java.net.*;
 import java.util.Date;
 import java.util.HashMap;
 
+import shared.ClientList;
 import shared.Command;
 import shared.DataHandler;
 import shared.Message;
@@ -33,7 +34,7 @@ public class Client implements DataHandler{
 		
 		in.start();
 		
-		this.out.sendObject(new Message("Goedendag. U heeft verbinding met SimplifiedJavaMessenger Server v.0.05b.", new Date(), "Server", -1, this.clientId));
+		this.out.sendObject(new Message("Goedendag. U heeft verbinding met SimplifiedJavaMessenger Server v0.1b.", new Date(), "Server", -1, this.clientId));
 	}
 	
 	public void disconnect(){
@@ -56,15 +57,16 @@ public class Client implements DataHandler{
 				target.getOut().sendObject(new Message(msg.getContent(), new Date(), msg.getFrom(), msg.getFromId(), msg.getTo()));
 			}
 			else {
-				this.out.sendObject(new Message("Die persoon is momenteel niet online...", new Date(), "Server", -1, this.clientId));
+				this.out.sendObject(new Message("Deze persoon is momenteel niet online...", new Date(), "Server", -1, this.clientId));
 			}
 		}
 	}
 	
 	public void sendOnlineUsers() throws IOException {
-		HashMap<Integer, String> clients = new HashMap<Integer, String>();
+		ClientList clients = new ClientList();
+		
 		for(Client cl : Server.getClients()) {
-			clients.put(cl.getClientId(), cl.getName());
+			clients.add(cl.getClientId(), cl.getName());
 		}
 		
 		this.out.sendObject(clients);
@@ -93,10 +95,16 @@ public class Client implements DataHandler{
 	public void sendHelp() throws IOException {
 		String helpText = "De volgende commando's zijn beschikbaar:\n";
 		helpText += "* /NAME <naam>: Uw nickname aanpassen;\n";
-		helpText += "* /LIST: Een lijst met online clients;\n";
+		helpText += "* /PART: Een conversatie sluiten.\n";
 		helpText += "* /HELP: Dit overzicht.\n";
 		
 		this.out.sendObject(new Message(helpText, new Date(), "Server", -1, this.clientId));
+	}
+
+	public void sendLeft(int partnerId) throws IOException {
+		String returnText = "Je chatpartner heeft het gesprek gesloten.";
+		
+		Server.findClient(partnerId).getOut().sendObject(new Message(returnText, new Date(), "Server", -1, partnerId));
 	}
 
 	@Override
@@ -121,11 +129,11 @@ public class Client implements DataHandler{
 				if(cmd.getCommand().equals("NAME")) {
 					updateName(cmd.getParameters()[0]);
 				}
-				else if(cmd.getCommand().equals("LIST")) {
-					sendOnlineUsers();
-				}
 				else if(cmd.getCommand().equals("HELP")) {
 					sendHelp();
+				}
+				else if(cmd.getCommand().equals("PART")) {
+					sendLeft(Integer.parseInt(cmd.getParameters()[0]));
 				}
 			}
 			catch (IOException e) {

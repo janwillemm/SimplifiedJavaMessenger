@@ -1,6 +1,7 @@
 package client;
 
 import gui.ConversationPanel;
+import gui.TabsPanePanel;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -14,13 +15,10 @@ import shared.Sender;
 
 @Data
 public class ChatConnection implements KeyListener {
-
-	int partnerId;
-	String partnerName;
-	Sender sender;
-	
-	ConversationPanel cp;
-	
+	private int partnerId;
+	private String partnerName;
+	private Sender sender;
+	private ConversationPanel cp;
 	
 	public ChatConnection(String name, int id, Sender sender) {
 		this.partnerId = id;
@@ -48,7 +46,16 @@ public class ChatConnection implements KeyListener {
 				if(input.substring(0, 1).equals("/")){
 					String cmnd = input.split(" ")[0];
 					
-					Command cmd = new Command(cmnd.replace("/", "").toUpperCase(), input.replace(cmnd+ " ", "").split(" "), -1);
+					Command cmd = null;
+					
+					if(cmnd.replace("/", "").toUpperCase().equals("PART") && this.partnerId > -1) {
+						Client.getInstance().getMainFrame().getTabs().removeTabByUserId(this.partnerId);
+						cmd = new Command("PART", new String[]{(this.partnerId+"")}, -1);
+						Client.getInstance().getServerConn().getChats().remove(this);
+					}
+					else {
+						cmd = new Command(cmnd.replace("/", "").toUpperCase(), input.replace(cmnd+ " ", "").split(" "), -1);
+					}
 					this.sender.sendObject(cmd);
 				}
 				else{
@@ -61,7 +68,6 @@ public class ChatConnection implements KeyListener {
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-				
 			} catch (NumberFormatException e1){
 				System.out.println("Voer wel een getal in!");
 			}
