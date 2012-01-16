@@ -1,9 +1,20 @@
 package gui;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
-import lombok.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.util.HashMap;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+
+import client.Client;
+
+import lombok.Getter;
 
 public class ClientsPane extends JPanel {
 	@Getter private HashMap<Integer, String> clients = null;
@@ -31,7 +42,7 @@ public class ClientsPane extends JPanel {
 		this.add(this.open, BorderLayout.SOUTH);
 		
 		//TODO point to actionHandler!
-		this.clientList.addListSelectionListener(null);	
+		this.open.addActionListener(Client.getInstance());	
 	}
 	
 	public void update(HashMap<Integer, String> clients) {

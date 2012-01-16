@@ -1,18 +1,29 @@
 package gui;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.text.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.event.KeyListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
-import java.text.*;
-import java.util.Date;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
-import lombok.*;
-
+import lombok.Getter;
 import shared.Message;
 
 @SuppressWarnings("serial")
-public class ConversationPanel extends JPanel  {
+public class ConversationPanel extends JPanel {
 	@Getter private int partnerId = -1;
 	@Getter private String partner = null;
 	
@@ -22,11 +33,10 @@ public class ConversationPanel extends JPanel  {
 	
 	private DateFormat formatter = new SimpleDateFormat("H:mm:ss");
 	
-	private JPanel talkPanel = new JPanel(new BorderLayout(2,2));
 	private JTextField inputBox = new JTextField();
 	private JButton sendButton = new JButton("Verstuur");
 	
-	public ConversationPanel(int pid, String p) {
+	public ConversationPanel(int pid, String p, KeyListener kl) {
 		this.partnerId = pid;
 		this.partner = p;
 		
@@ -44,6 +54,7 @@ public class ConversationPanel extends JPanel  {
 		this.inputBox.setForeground(new Color(150, 150, 225));
 		this.inputBox.setFont(new Font("Consolas", 0, 12));
 		this.inputBox.setMargin(new Insets(5,5,5,5));
+		this.inputBox.addKeyListener(kl);
 		
 		try {
 			doc.insertString(doc.getLength(), "*** Je chat nu met " + p + " ***", new SimpleAttributeSet());
@@ -54,13 +65,8 @@ public class ConversationPanel extends JPanel  {
 		
 		this.add(this.scrollPane, BorderLayout.CENTER);
 		
-		this.talkPanel.add(this.inputBox, BorderLayout.CENTER);
-		this.talkPanel.add(this.sendButton, BorderLayout.EAST);
+		this.add(this.inputBox, BorderLayout.SOUTH);
 		
-		this.add(this.talkPanel, BorderLayout.SOUTH);
-		
-		//TODO point to actionHandler!
-		this.sendButton.addActionListener(null);
 	}
 	
 	public void addMessage(String time, String from, String text, Color textColor) {
@@ -91,8 +97,8 @@ public class ConversationPanel extends JPanel  {
 			addMessage(this.formatter.format(msg.getDate()), msg.getFrom(), msg.getContent(), new Color(0, 180, 0));
 	}
 	
-	public void addOwnMessage(String str) {
-		addMessage(this.formatter.format(new Date()), "Jij", str, new Color(150, 150, 225));
+	public void addOwnMessage(Message msg) {
+		addMessage(this.formatter.format(msg.getDate()), "Jij", msg.getContent(), new Color(150, 150, 225));
 	}
 	
 	public String getInput() {
@@ -102,5 +108,4 @@ public class ConversationPanel extends JPanel  {
 	public void setInput(String str) {
 		this.inputBox.setText(str);
 	}
-
 }

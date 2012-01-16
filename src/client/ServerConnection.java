@@ -28,7 +28,7 @@ public class ServerConnection implements DataHandler{
 	ArrayList<ChatConnection> chats;
 	
 	
-	public void createSocket(Command cmd){
+	public void createSocket(){
 			chats = new ArrayList<ChatConnection>();
 			try {
 				//JW 145.53.129.85
@@ -39,10 +39,7 @@ public class ServerConnection implements DataHandler{
 				this.receive = new Thread(new Receiver(this));
 				
 				this.send.start();
-				this.receive.start();
-				this.sender.sendObject(cmd);
-				
-				
+				this.receive.start();				
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -57,26 +54,14 @@ public class ServerConnection implements DataHandler{
 	public void objectReceived(Object object) {
 		if(object instanceof Message){
 			Message msg = (Message) object;
-			if(this.id == -1)this.id = msg.getTo();
 			
-			int fromId = msg.getFromId();
-			boolean partnerFound = false;
-			for(ChatConnection chat : chats){
-				if(fromId == chat.partnerId){
-					chat.receivedMessage(msg);
-					partnerFound = true;
-				}
-			}
-			if(!partnerFound){
-				ChatConnection chat = new ChatConnection(msg.getFrom(), msg.getFromId());
-				this.addChat(chat);
-				chat.receivedMessage(msg);
-			}
+			if(this.id == -1)
+				this.id = msg.getTo();
 			
-			System.out.println(msg);
+			this.openChatWithUser(msg.getFromId(), msg.getFrom()).receivedMessage(msg);
 		}
 		else if(object instanceof HashMap){
-			MainFrame.getInstance().addClients((HashMap<Integer, String>)object);
+			Client.getInstance().getMainFrame().addClients((HashMap<Integer, String>)object);
 		}
 		
 	}
@@ -87,11 +72,22 @@ public class ServerConnection implements DataHandler{
 		
 	}
 	
-	private void addChat(ChatConnection chat){
+	public ChatConnection openChatWithUser(int userId, String user) {
+		boolean partnerFound = false;
+		ChatConnection chatConn = null;
 		
-		this.chats.add(chat);
+		for(ChatConnection chat : chats){
+			if(userId == chat.partnerId){
+				partnerFound = true;
+				chatConn = chat;
+			}
+		}
 		
+		if(!partnerFound) {
+			chatConn = new ChatConnection(user, userId, this.sender);
+			this.chats.add(chatConn);
+		}
 		
+		return chatConn;
 	}
-	
 }

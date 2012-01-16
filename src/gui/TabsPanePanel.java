@@ -19,8 +19,13 @@ public class TabsPanePanel extends JTabbedPane{
 	
 	public void addNewPanel(ConversationPanel panel){
 		this.panels.add(panel);
-		this.addTab("#" + panel.getPartnerId() + " - " + panel.getPartner(), panel);
-		//this.setMnemonicAt(this.getTabCount(), KeyEvent.VK_1);
+		
+		if(panel.getPartnerId() < 0) {
+			this.addTab(panel.getPartner(), panel);
+		}
+		else {
+			this.addTab("#" + panel.getPartnerId() + " - " + panel.getPartner(), panel);
+		}
 	}
 	
 	public void removeTabByUserId(int id){
@@ -28,7 +33,6 @@ public class TabsPanePanel extends JTabbedPane{
 		
 		this.remove(cp);
 		this.panels.remove(cp);
-		//this.
 	}
 	
 	public ConversationPanel getTabByUserId(int id){

@@ -23,7 +23,7 @@ public class Server {
 			System.out.println("* Server up and running!");
 			
 			Server.portNumber = portNumber;
-			startReporting();
+			//startReporting();
 			System.out.println("* Reporter up and running!");
 			
 			listenForClients();
@@ -44,11 +44,24 @@ public class Server {
 		if(!clients.contains(cl)) {
 			clients.add(cl);
 		}
+		pushClientsList();
 	}
 	
 	public static void removeClient(Client cl) {
 		if(clients.contains(cl)) {
 			clients.remove(cl);
+		}
+		pushClientsList();
+	}
+	
+	public static void pushClientsList(){
+		try {
+			for(Client c : clients){
+				c.sendOnlineUsers();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

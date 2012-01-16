@@ -62,16 +62,12 @@ public class Client implements DataHandler{
 	}
 	
 	public void sendOnlineUsers() throws IOException {
-		String content = "Aantal online gebruikers: " + Server.getClients().size() + "\n";
 		HashMap<Integer, String> clients = new HashMap<Integer, String>();
 		for(Client cl : Server.getClients()) {
-			content += "#" + cl.getClientId() + ": " + cl.getName() + "\n";
 			clients.put(cl.getClientId(), cl.getName());
 		}
-		content = content.trim();
 		
 		this.out.sendObject(clients);
-		//this.out.sendObject(new Message(content, new Date(), "Server", -1, this.clientId));
 	}
 	
 	public void updateName(String newName) {
@@ -91,6 +87,7 @@ public class Client implements DataHandler{
 				e.printStackTrace();
 			}
 		}
+		Server.pushClientsList();
 	}
 	
 	public void sendHelp() throws IOException {
