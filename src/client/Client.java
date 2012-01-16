@@ -2,7 +2,6 @@ package client;
 
 import gui.ConversationPanel;
 import gui.MainFrame;
-import gui.WelcomeFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +20,6 @@ import shared.Command;
 public class Client implements KeyListener, ActionListener{
 	private static Client cl = null;
 	@Getter @Setter private MainFrame mainFrame;
-	private WelcomeFrame wf;
 	@Getter private ServerConnection serverConn;
 	@Getter @Setter private ConversationPanel cp;
 	
@@ -30,15 +28,7 @@ public class Client implements KeyListener, ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == this.wf.startButton){
-			if(!this.wf.nameTextField.getText().equals("")){
-				this.startConnection(this.wf.nameTextField.getText());
-				this.wf.setVisible(false);
-			}
-		}
-		else {
-			this.serverConn.openChatWithUser(this.mainFrame.getClients().getSelectedUserId(), this.mainFrame.getClients().getSelectedUser());
-		}
+		this.serverConn.openChatWithUser(this.mainFrame.getClients().getSelectedUserId(), this.mainFrame.getClients().getSelectedUser());
 	}
 
 	private void startConnection(String name) {
