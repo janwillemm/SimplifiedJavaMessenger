@@ -12,12 +12,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+import lombok.Getter;
+import shared.ClientList;
 import client.Client;
 
-import lombok.Getter;
-
 public class ClientsPane extends JPanel {
-	@Getter private HashMap<Integer, String> clients = null;
+	@Getter private ClientList clients = null;
 	
 	private DefaultListModel clientListModel = new DefaultListModel();
 	private JList clientList;
@@ -45,13 +45,13 @@ public class ClientsPane extends JPanel {
 		this.open.addActionListener(Client.getInstance());	
 	}
 	
-	public void update(HashMap<Integer, String> clients) {
+	public void update(ClientList clients) {
 		this.clients = clients;
 		
 		this.clientListModel.removeAllElements();
 		
-		for(int i : clients.keySet()) {
-			this.clientListModel.addElement("#" + i + ": " + clients.get(i));
+		for(int i : clients.getClients().keySet()) {
+			this.clientListModel.addElement("#" + i + ": " + clients.getClients().get(i));
 		}
 	}
 	
@@ -66,7 +66,7 @@ public class ClientsPane extends JPanel {
 
 	public String getSelectedUser() {
 		if(this.getSelectedUserId() > -1) {
-			return this.clients.get(this.getSelectedUserId());
+			return this.clients.getClients().get(this.getSelectedUserId());
 		}
 		return null;
 	}

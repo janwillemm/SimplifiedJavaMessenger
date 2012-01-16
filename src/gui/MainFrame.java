@@ -1,11 +1,9 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.util.HashMap;
-
 import javax.swing.JFrame;
-
 import lombok.Getter;
+import shared.ClientList;
 
 
 public class MainFrame extends JFrame{
@@ -13,7 +11,8 @@ public class MainFrame extends JFrame{
 	@Getter private ClientsPane clients = null;
 	
 	public MainFrame(){
-		super("SIMPLIFIEDJAVAMESSENGER");
+		super("Simplified Java Messenger");
+		
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		MainFrame.setDefaultLookAndFeelDecorated(true);
 		this.setLayout(new BorderLayout());
@@ -23,11 +22,14 @@ public class MainFrame extends JFrame{
 		this.add(this.clients, BorderLayout.EAST);
 		this.add(this.tabs, BorderLayout.CENTER);
 		
-		
 		this.setBounds(100,100,550,500);	
 	}
 	
-	public void addClients(HashMap<Integer, String> clients){
+	public void addClients(ClientList clients){
 		this.clients.update(clients);
+	}
+	
+	public void askForName(){
+		
 	}
 }

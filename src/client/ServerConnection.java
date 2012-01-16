@@ -1,53 +1,46 @@
 package client;
 
-import gui.MainFrame;
+import gui.ConversationPanel;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import lombok.Getter;
-
-import shared.Command;
+import shared.ClientList;
 import shared.DataHandler;
 import shared.Message;
 import shared.Receiver;
 import shared.Sender;
 
 public class ServerConnection implements DataHandler{
-
-	@Getter Socket socket;
-	Sender sender;
-	Thread send;
-	Thread receive;
-	int id = -1;
-	ArrayList<ChatConnection> chats;
-	
+	@Getter private Socket socket;
+	@Getter private Sender sender;
+	private Thread send;
+	private Thread receive;
+	private int id = -1;
+	@Getter private ArrayList<ChatConnection> chats;
 	
 	public void createSocket(){
-			chats = new ArrayList<ChatConnection>();
-			try {
-				//JW 145.53.129.85
-				//RickW 86.83.37.53
-				this.socket = new Socket("86.83.37.53", 1337);
-				this.sender = new Sender(socket);
-				this.send = new Thread(new InputHandler(this.sender));
-				this.receive = new Thread(new Receiver(this));
-				
-				this.send.start();
-				this.receive.start();				
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		chats = new ArrayList<ChatConnection>();
+		try {
+			//JW 145.53.129.85
+			//RickW 86.83.37.53
+			this.socket = new Socket("86.83.37.53", 1337);
+			this.sender = new Sender(socket);
+			this.send = new Thread(new InputHandler(this.sender));
+			this.receive = new Thread(new Receiver(this));
 			
+			this.send.start();
+			this.receive.start();				
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -59,9 +52,16 @@ public class ServerConnection implements DataHandler{
 				this.id = msg.getTo();
 			
 			this.openChatWithUser(msg.getFromId(), msg.getFrom()).receivedMessage(msg);
+			
+			if(msg.getFromId() == -1) {
+				ConversationPanel current = (ConversationPanel) Client.getInstance().getMainFrame().getTabs().getSelectedComponent();
+				if(current.getPartnerId() != -1) {
+					current.addExternalMessage(msg);
+				}
+			}
 		}
-		else if(object instanceof HashMap){
-			Client.getInstance().getMainFrame().addClients((HashMap<Integer, String>)object);
+		else if(object instanceof ClientList){
+			Client.getInstance().getMainFrame().addClients((ClientList) object);
 		}
 		
 	}
@@ -69,7 +69,6 @@ public class ServerConnection implements DataHandler{
 	@Override
 	public void disconnect() {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	public ChatConnection openChatWithUser(int userId, String user) {
@@ -77,7 +76,7 @@ public class ServerConnection implements DataHandler{
 		ChatConnection chatConn = null;
 		
 		for(ChatConnection chat : chats){
-			if(userId == chat.partnerId){
+			if(userId == chat.getPartnerId()){
 				partnerFound = true;
 				chatConn = chat;
 			}

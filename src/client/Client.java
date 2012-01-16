@@ -1,30 +1,31 @@
 package client;
 
+import gui.ConversationPanel;
 import gui.MainFrame;
 import gui.WelcomeFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.JTextField;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import shared.Command;
 
-public class Client implements ActionListener{
+public class Client implements KeyListener, ActionListener{
 	private static Client cl = null;
-	@Getter private MainFrame mainFrame;
+	@Getter @Setter private MainFrame mainFrame;
 	private WelcomeFrame wf;
-	private ServerConnection serverConn;
+	@Getter private ServerConnection serverConn;
+	@Getter @Setter private ConversationPanel cp;
 	
 	public Client(){
-		this.wf = new WelcomeFrame("This is SimplifiedJavaMessenger 0.01b. Thanks for using it!", this);
-		this.wf.setVisible(true);
-		
-		
 	}
 
 	@Override
@@ -41,22 +42,16 @@ public class Client implements ActionListener{
 	}
 
 	private void startConnection(String name) {
-		this.mainFrame = new MainFrame();
-		mainFrame.setVisible(true);
 		
 		this.serverConn = new ServerConnection();
 		this.serverConn.createSocket();
 		try {
-			this.serverConn.sender.sendObject(new Command("NAME", new String[]{name}, -1));
-			this.serverConn.sender.sendObject(new Command("LIST",new String[]{}, -1));
+			this.serverConn.getSender().sendObject(new Command("NAME", new String[]{name}, -1));
+			this.serverConn.getSender().sendObject(new Command("LIST",new String[]{}, -1));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	}
-	public static void main(String[] args) {
-		Client.getInstance();
 	}
 	
 	public static Client getInstance() {
@@ -64,5 +59,27 @@ public class Client implements ActionListener{
 			cl = new Client();
 		}
 		return cl;
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		if(arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+			this.mainFrame.getTabs().remove(this.cp);
+			this.startConnection(this.cp.getInput());
+			
+		}
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

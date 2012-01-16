@@ -30,7 +30,7 @@ public class TabsPanePanel extends JTabbedPane{
 	
 	public void removeTabByUserId(int id){
 		ConversationPanel cp = this.getTabByUserId(id);
-		
+
 		this.remove(cp);
 		this.panels.remove(cp);
 	}
