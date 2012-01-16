@@ -33,7 +33,7 @@ public class ServerConnection implements DataHandler{
 			try {
 				//JW 145.53.129.85
 				//RickW 86.83.37.53
-				this.socket = new Socket("localhost", 1337);
+				this.socket = new Socket("86.83.37.53", 1337);
 				this.sender = new Sender(socket);
 				this.send = new Thread(new InputHandler(this.sender));
 				this.receive = new Thread(new Receiver(this));
