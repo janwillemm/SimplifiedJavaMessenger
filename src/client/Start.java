@@ -1,9 +1,14 @@
 package client;
 
+import java.awt.Color;
+import java.util.Date;
+
 import gui.ConversationPanel;
 import gui.MainFrame;
 
 import javax.swing.UIManager;
+
+import shared.Message;
 
 public class Start{
 
@@ -24,7 +29,10 @@ public class Start{
 		client.setMainFrame(new MainFrame());
 		client.getMainFrame().setVisible(true);
 		
-		client.setCp(new ConversationPanel(-1, "Vul je naam in", client));
+		ConversationPanel cp = new ConversationPanel(-1, "Inloggen", client);
+		client.setCp(cp);
+		
+		cp.addMessage("Welkom! Vul een naam in en druk op enter om verbinding te maken met de server.", new Color(230, 0, 0));
 		
 		client.getMainFrame().getTabs().addNewPanel(client.getCp());
 	}

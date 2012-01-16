@@ -57,7 +57,8 @@ public class ConversationPanel extends JPanel {
 		this.inputBox.addKeyListener(kl);
 		
 		try {
-			doc.insertString(doc.getLength(), "*** Je chat nu met " + p + " ***", new SimpleAttributeSet());
+			if(pid > -1)
+				doc.insertString(doc.getLength(), "*** Je chat nu met " + p + " ***\n", new SimpleAttributeSet());
 		} catch (BadLocationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -69,6 +70,10 @@ public class ConversationPanel extends JPanel {
 		
 	}
 	
+	public void addMessage(String text, Color textColor) {
+		this.addMessage(null, null, text, textColor, false);
+	}
+	
 	public void addMessage(String time, String from, String text, Color textColor) {
 		this.addMessage(time, from, text, textColor, false);
 	}
@@ -78,9 +83,11 @@ public class ConversationPanel extends JPanel {
 		StyleConstants.setForeground(style, textColor);
 		
 		String addition = new String(); 
-		addition += "\n[" + time + "] ";
-		addition += from + ": ";
-		addition += text;
+		if(time != null)
+			addition += "[" + time + "] ";
+		if(from != null)
+			addition += from + ": ";
+		addition += text + "\n";
 		
 		try {
 			doc.insertString(doc.getLength(), addition, style);
