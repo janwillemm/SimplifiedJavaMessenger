@@ -1,15 +1,25 @@
 package gui;
 
+/**
+ * Holds the mainFrame
+ * @author Jan-Willem Manenschijn & Rick Wieman
+ */
+
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import lombok.Getter;
 import shared.ClientList;
 
-
+@SuppressWarnings("serial")
 public class MainFrame extends JFrame{
 	@Getter private TabsPanePanel tabs;
 	@Getter private ClientsPane clients = null;
 	
+	/**
+	 * Constructor
+	 */
 	public MainFrame(){
 		super("Simplified Java Messenger");
 		
@@ -25,11 +35,19 @@ public class MainFrame extends JFrame{
 		this.setBounds(100,100,550,500);	
 	}
 	
+	/**
+	 * Sends request to update the clientsPane
+	 * @param clients the new client list
+	 */
 	public void addClients(ClientList clients){
 		this.clients.update(clients);
 	}
 	
-	public void askForName(){
-		
+	/**
+	 * Pops out a messageDialog containing the given error
+	 * @param text error message
+	 */
+	public void showError(String text) {
+		JOptionPane.showMessageDialog(null, text, "Fout", JOptionPane.ERROR_MESSAGE);
 	}
 }

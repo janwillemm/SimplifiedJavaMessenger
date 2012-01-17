@@ -1,5 +1,10 @@
 package shared;
 
+/**
+ * Holds a message
+ * @author Jan-Willem Manenschijn & Rick Wieman
+ */
+
 import java.io.*;
 import java.util.Date;
 

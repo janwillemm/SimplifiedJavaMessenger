@@ -1,22 +1,29 @@
 package gui;
 
-import java.awt.GridLayout;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+/**
+ * Holds all tabs
+ * @author Jan-Willem Manenschijn & Rick Wieman
+ */
 
+import java.util.ArrayList;
 import javax.swing.*;
 
 @SuppressWarnings("serial")
-public class TabsPanePanel extends JTabbedPane{
-	
+public class TabsPanePanel extends JTabbedPane {
 	private ArrayList<ConversationPanel> panels;
 	
+	/**
+	 * Constructor
+	 */
 	public TabsPanePanel(){
 		super();
 		this.panels = new ArrayList<ConversationPanel>();
-		
 	}
 	
+	/**
+	 * Adds a new ConversationPanel to the pane
+	 * @param panel the ConversationPanel that should be added
+	 */
 	public void addNewPanel(ConversationPanel panel){
 		this.panels.add(panel);
 		
@@ -28,6 +35,10 @@ public class TabsPanePanel extends JTabbedPane{
 		}
 	}
 	
+	/**
+	 * Removes a ConversationPanel by a given user id
+	 * @param id user id
+	 */
 	public void removeTabByUserId(int id){
 		ConversationPanel cp = this.getTabByUserId(id);
 
@@ -35,6 +46,10 @@ public class TabsPanePanel extends JTabbedPane{
 		this.panels.remove(cp);
 	}
 	
+	/**
+	 * @param id user id
+	 * @return ConversationPanel matching the given user id
+	 */
 	public ConversationPanel getTabByUserId(int id){
 		for(ConversationPanel cp : this.panels){
 			if(cp.getPartnerId() == id) return cp;

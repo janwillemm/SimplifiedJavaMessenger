@@ -1,5 +1,10 @@
 package shared;
 
+/**
+ * Holds a command
+ * @author Jan-Willem Manenschijn & Rick Wieman
+ */
+
 import java.io.Serializable;
 
 import lombok.*;

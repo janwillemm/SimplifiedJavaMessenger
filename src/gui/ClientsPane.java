@@ -1,9 +1,13 @@
 package gui;
 
+/**
+ * Holds a ClientList
+ * @author Jan-Willem Manenschijn & Rick Wieman
+ */
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -16,6 +20,7 @@ import lombok.Getter;
 import shared.ClientList;
 import client.Client;
 
+@SuppressWarnings({"serial", "rawtypes", "unchecked"})
 public class ClientsPane extends JPanel {
 	@Getter private ClientList clients = null;
 	
@@ -24,6 +29,9 @@ public class ClientsPane extends JPanel {
 		
 	private JButton open = new JButton("Open gesprek");
 	
+	/**
+	 * Constructor, to create the pane
+	 */
 	public ClientsPane() {
 		setLayout(new BorderLayout(2,2));
 		
@@ -41,10 +49,13 @@ public class ClientsPane extends JPanel {
 		this.add(scrollPane, BorderLayout.CENTER);
 		this.add(this.open, BorderLayout.SOUTH);
 		
-		//TODO point to actionHandler!
 		this.open.addActionListener(Client.getInstance());	
 	}
 	
+	/**
+	 * Handles the given list as an update, by using it to refresh the contents of this pane
+	 * @param clients list of currently online clients
+	 */
 	public void update(ClientList clients) {
 		this.clients = clients;
 		
@@ -55,6 +66,9 @@ public class ClientsPane extends JPanel {
 		}
 	}
 	
+	/**
+	 * @return the ID of the selected user name
+	 */
 	public int getSelectedUserId() {
 		if(this.clientList.getSelectedValue() != null) {
 			String[] clientIdArr = ((String) this.clientList.getSelectedValue()).split(":");
@@ -64,6 +78,9 @@ public class ClientsPane extends JPanel {
 		return -1;
 	}
 
+	/**
+	 * @return the selected user name
+	 */
 	public String getSelectedUser() {
 		if(this.getSelectedUserId() > -1) {
 			return this.clients.getClients().get(this.getSelectedUserId());

@@ -1,6 +1,7 @@
 package server;
 
 /**
+ * Runs the chat server. Use this one to start the server.
  * @author Jan-Willem Manenschijn & Rick Wieman
  */
 
@@ -8,18 +9,17 @@ import java.io.IOException;
 
 public class Start {
 	/**
-	 * Starts the chatserver
-	 * @param args console params
+	 * @param args commandline parameters
 	 */
 	public static void main(String[] args){
 		try {
 			Server.start(1337);
 		} 
 		catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Failed to start the server...");
 		}
 		catch (InterruptedException e) {
-			e.printStackTrace();
+			System.out.println("Failed to start the server...");
 		}
 	}
 }
